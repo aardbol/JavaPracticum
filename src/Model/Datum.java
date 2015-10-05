@@ -311,5 +311,6 @@ public class Datum implements Comparable<Datum> {
 		Datum datum = new Datum("05/10/2015");
 		datum.veranderDatum2(61);
 		System.out.println("Verander datum: " + datum.toString());
+		
 	}
 }
