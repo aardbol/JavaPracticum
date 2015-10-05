@@ -1,26 +1,26 @@
-package model.gregorian;
+package model.Gregorian;
 
-import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-public class Datum extends GregorianCalendar{
+public class Datum implements Comparable<Datum> {
 	
 	final String[] MAAND_NAMEN = { "januari", "februari", "maart", "april", "mei", "juni", "juli", "augustus", "september", "oktober", "november", "december" };
 	final int[] MAAND_DAGEN = { 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};	
+	private GregorianCalendar greg;
 	
 	public Datum()
 	{
-		super();
+		greg = new GregorianCalendar();
 	}
 	
 	public Datum( final int dag,final int maand,final int jaar )
 	{
-		super(jaar, maand, dag);
+		greg = new GregorianCalendar(jaar, maand, dag);
 	}
 	
 	public Datum( final Datum copy )
 	{
-		set(copy.get(YEAR), copy.get(MONTH), copy.get(DAY_OF_MONTH));
+		greg.set(copy.getYear(), copy.getMonth(), copy.getDay());
 	}
 	
 	//@param teks = "DD-MM-JJJJ"
@@ -30,22 +30,39 @@ public class Datum extends GregorianCalendar{
 		dag = Integer.parseInt(tekst.substring(0, 2));		
 		maand = Integer.parseInt(tekst.substring(3, 5));
 		jaar = Integer.parseInt(tekst.substring(6));
-		super.set(jaar, maand, dag);
+		greg = new GregorianCalendar(jaar, maand, dag);
+		//greg.set(jaar, maand, dag);
 	}
+		
+	public int getDay()
+	{
+		return greg.get(GregorianCalendar.DAY_OF_MONTH);
+	}
+	
+	public int getMonth()
+	{
+		return greg.get(GregorianCalendar.MONTH);
+	}
+	
+	public int getYear()
+	{
+		return greg.get(GregorianCalendar.YEAR);
+	}
+	
 	
 	public void setDatum( final int dag, final int maand, final int jaar )
 	{
-		set( jaar, maand, dag);
+		greg.set( jaar, maand, dag);
 	}
 	
 	public String getDatumInAmerikaansFormaat() // vb: 2009/02/04 ## jjjj/mm/dd
 	{
 		StringBuilder sb = new StringBuilder();
-		sb.append(this.get(MONTH));
+		sb.append(getYear());
 		sb.append("/");
-		sb.append(this.get(DAY_OF_MONTH));
+		sb.append(getMonth());
 		sb.append("/");
-		sb.append(this.get(YEAR));
+		sb.append(getDay());
 		return sb.toString();
 		//return this.get(YEAR) +"/" + this.get(MONTH) +"/"+ this.get(DAY_OF_MONTH);
 	}
@@ -53,23 +70,18 @@ public class Datum extends GregorianCalendar{
 	public String getDatumInEuropeesFormaat() // vb: 04/02/2009 ## dd/mm/dd
 	{
 		StringBuilder sb = new StringBuilder();
-		sb.append(this.get(DAY_OF_MONTH));
+		sb.append(getDay());
 		sb.append("/");
-		sb.append(this.get(MONTH));
+		sb.append(getMonth());
 		sb.append("/");
-		sb.append(this.get(YEAR));
-		return sb.toString();//this.get(DAY_OF_MONTH) +"/" + this.get(MONTH) +"/"+ this.get(YEAR);
+		sb.append(getYear());
+		return sb.toString();
+		//this.get(DAY_OF_MONTH) +"/" + this.get(MONTH) +"/"+ this.get(YEAR);
 	}
 	
 	@Override
 	public String toString() {	
-		return this.get(DAY_OF_MONTH) + " " + MAAND_NAMEN[this.get(MONTH)-1] + " " + this.get(YEAR);
-	}
-	
-	@Override
-	public int compareTo(Calendar anotherCalendar) {
-		// TODO Auto-generated method stub
-		return super.compareTo(anotherCalendar);
+		return getDay() + " " + MAAND_NAMEN[getMonth()-1] + " " + getYear();
 	}
 	 
 	@Override
@@ -80,27 +92,27 @@ public class Datum extends GregorianCalendar{
 	
 	public int verschilInJaren(Datum d)
 	{
-		if( this.get(MONTH) <= d.get(MONTH) && this.get(DAY_OF_MONTH) <= d.get(DAY_OF_MONTH) )
+		if( getMonth() <= d.getMonth() && getDay() <= d.getDay() )
 		{
-			return d.get(YEAR) - this.get(YEAR);
+			return d.getYear() - getYear();
 		}
 		else
-			return d.get(YEAR) - this.get(YEAR) -1;
+			return d.getYear() - getYear() -1;
 	}
 	
 	public int verschilInMaanden(Datum d)
 	{
-		return d.get(MONTH) - this.get(MONTH) + verschilInJaren(d) * 12;		
+		return d.getMonth() - getMonth() + verschilInJaren(d) * 12;		
 	}
 	
 	public int verschilInDagen(Datum d)
 	{
-		return this.get(DAY_OF_MONTH) - d.get(DAY_OF_MONTH);
+		return getMonth() - d.getMonth();
 	}
 	
 	public void veranderThisDatum( int aantalDagen )
 	{
-		this.roll(DAY_OF_MONTH, aantalDagen);
+		greg.roll(GregorianCalendar.DAY_OF_MONTH, aantalDagen);
 	}
 	
 	public Datum veranderDatum( int aantalDagen )
@@ -108,5 +120,11 @@ public class Datum extends GregorianCalendar{
 		Datum nieuw = new Datum(this);
 		nieuw.veranderDatum(aantalDagen);
 		return nieuw;
+	}
+	
+	@Override
+	public int compareTo(Datum anotherCalendar) {
+		// TODO Auto-generated method stub
+		return greg.compareTo(anotherCalendar.greg);
 	}
 }

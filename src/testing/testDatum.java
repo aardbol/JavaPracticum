@@ -5,7 +5,8 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import model.gregorian.Datum;
+import model.Gregorian.Datum;
+//import model.Normal.Datum;
 
 public class testDatum {
 	private Datum testSubject1;
