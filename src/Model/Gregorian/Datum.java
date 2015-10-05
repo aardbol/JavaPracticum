@@ -1,4 +1,4 @@
-package model_b;
+package Model.Gregorian;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;

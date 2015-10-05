@@ -1,11 +1,11 @@
-package testen;
+package testing;
 
 import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import model_b.Datum;
+import Model.Gregorian.Datum;
 
 public class testDatum {
 	private Datum testSubject1;
