@@ -1,4 +1,4 @@
-package Model;
+package model;
 
 import java.util.Date;
 
@@ -254,42 +254,62 @@ public class Datum implements Comparable<Datum> {
 		 int dagenDatum1;
 		 int dagenDatum2;
 		 int verschilDagen;
-		 dagenDatum1 = this.dag;
-		 dagenDatum2 = d.dag;
-		 int maanden = verschilInMaanden(d);		 
-		 if(kleinerDan(d) == true)
-		 {
-			 if(this.maand % 2 == 0){
-				 verschilDagen = (maanden * 30) + dagenDatum2 - dagenDatum1 + maanden;
-			 }
-			 else{
-				 verschilDagen = (maanden * 31)+ dagenDatum2 - dagenDatum1 + maanden;
-			 }
+		 if(this.maand % 2 == 0){
+			 dagenDatum1 = ((this.jaar * 12)+(this.maand*30))+this.dag;
+			 dagenDatum2 = ((d.jaar * 12)+(d.maand*30))+d.dag;
 		 }
 		 else{
-			 if(this.maand  % 2 == 0){
-				 verschilDagen = (maanden * 30) + dagenDatum1 - dagenDatum2 + maanden ;
-			 }
-			 else{
-				 verschilDagen = (maanden * 31) + dagenDatum1 - dagenDatum2 + maanden;
-			 }
+			 dagenDatum1 = ((this.jaar * 12)+(this.maand*31))+this.dag;
+			 dagenDatum2 = ((d.jaar * 12)+(d.maand*31))+d.dag;
+		 }
+		 if(kleinerDan(d) == true)
+		 {
+			 verschilDagen = dagenDatum2-dagenDatum1;
+		 }
+		 else{
+			 verschilDagen = dagenDatum1-dagenDatum2;
 		 }
 		 return Math.abs(verschilDagen);
 	}
+	public void veranderDatum(int aantalDagen)
+	{	if(aantalDagen%30 >= 0)
+		{
+			this.maand+=aantalDagen/30;
+		}
+		this.dag += aantalDagen%30;		
+	}
 	
-	
+	public Datum veranderDatum2(int aantalDagen)
+	{
+		Datum d = new Datum();
+		if(aantalDagen%30 >= 0)
+		{
+			this.maand+=aantalDagen/30;
+		}
+		this.dag += aantalDagen%30;
+		d.maand = this.maand;
+		d.dag = this.dag;
+		d.jaar = this.jaar;
+		return d;
+	}
+
 	public static void main(String[] args)
 	{
 		Datum d = new Datum();
-		d.setDag(6);
+		d.setDag(5);
 		d.setMaand(10);
 		d.setJaar(2015);
 		System.out.println("Datum 1: " + d.toString());
 		
-		Datum d2 = new Datum("6/12/2015");
+		Datum d2 = new Datum("15/12/2015");
 		System.out.println("Datum 2:" + d2.toString());
 		System.out.println("Verschil in jaren: " + d.verschilInJaren(d2));
 		System.out.println("Verschil in maanden: " + d.verschilInMaanden(d2));
 		System.out.println("Verschil in dagen: " + d.verschilInDagen(d2));
+		d.veranderDatum(62);
+		System.out.println("Verander datum: " + d.toString());
+		Datum datum = new Datum("05/10/2015");
+		datum.veranderDatum2(61);
+		System.out.println("Verander datum: " + datum.toString());
 	}
 }
