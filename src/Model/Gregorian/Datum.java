@@ -6,7 +6,7 @@ public class Datum implements Comparable<Datum> {
 	
 	final String[] MAAND_NAMEN = { "januari", "februari", "maart", "april", "mei", "juni", "juli", "augustus", "september", "oktober", "november", "december" };
 	final int[] MAAND_DAGEN = { 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};	
-	private GregorianCalendar greg;
+	private GregorianCalendar greg; // da shit
 	
 	public Datum()
 	{
