@@ -38,12 +38,13 @@ public class MainMenu extends JFrame{
 	}
 
 	private void addComponentsToPane(Container pane) {
-		
+		// create labels
 		JPanel labelPanel = new JPanel();
 		addLabelsToPane(labelPanel);
 		labelPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		pane.add(labelPanel, BorderLayout.PAGE_START);
 
+		// create buttons
 		JPanel buttonPanel = new JPanel();
 		addButtonsToPane(buttonPanel);
 		buttonPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -53,9 +54,9 @@ public class MainMenu extends JFrame{
 	private void addLabelsToPane(Container pane) {
 		pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
 
-		JLabel emptyLabel = new JLabel("Huisjes: 107");
+		//JLabel emptyLabel = new JLabel("Huisjes: 107");
 		// emptyLabel.setPreferredSize(new Dimension(175, 100));
-		pane.add(emptyLabel, BorderLayout.CENTER);
+		pane.add(new JLabel("Huisjes: 107"), BorderLayout.CENTER);
 		pane.add(Box.createRigidArea(new Dimension(0, 8)));
 		pane.add(new JLabel("reservaties: 0"), BorderLayout.CENTER);
 	}
@@ -63,8 +64,6 @@ public class MainMenu extends JFrame{
 	private void addButtonsToPane(Container pane) {
 		pane.setLayout(new BoxLayout(pane, BoxLayout.X_AXIS));
 	
-		//pane.setLayout(new BorderLayout(4,0));
-
 		JButton btnNewResevation = addAButton("Nieuwe reservatie", true, pane);
 		btnNewResevation.addActionListener(new ActionListener() {
 	         public void actionPerformed(ActionEvent e) {
@@ -86,8 +85,6 @@ public class MainMenu extends JFrame{
 	private JButton addAButton(String text, boolean enabled, Container container) {
 		JButton button = new JButton(text);
 		button.setEnabled(enabled);
-		//button.setAlignmentX(Component.CENTER_ALIGNMENT);
-		// button.setAlignmentY(Component.BOTTOM_ALIGNMENT);
 		container.add(button);
 		return button;
 	}
