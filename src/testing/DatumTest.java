@@ -12,7 +12,7 @@ import model.Maanden;
 public class DatumTest {
 
 	private Datum datum, datumVandaag, datumMinEenJaar, datumMinTienJaar,
-	datumMinTweeHonderdJaar, datumMetSchrikkeljaar, datumPlusTienJaar,
+	datumMinTweeHonderdJaar, datumMetSchrikkeljaar, datumPlusEenJaar, datumPlusTienJaar,
 	datumFebruariGeenSchrikkeljaar, datumFebruariSchrikkeljaar;
 	
 	private int jaar250 = 250, jaar1000 = 1000, jaar1025 = 1025, jaar1996 = 1996, 
@@ -28,6 +28,7 @@ public class DatumTest {
 		datumMinTienJaar = new Datum(1, 1, 2005);
 		datumMetSchrikkeljaar = new Datum(1, 1, 2000);
 		datumMinTweeHonderdJaar = new Datum(1, 1, 1815);
+		datumPlusEenJaar = new Datum(1, 1, 2016);
 		datumPlusTienJaar = new Datum(1, 1, 2025);
 		datumFebruariGeenSchrikkeljaar = new Datum(1, 2, 2015);
 		datumFebruariSchrikkeljaar = new Datum(1, 2, 2016);
@@ -73,6 +74,36 @@ public class DatumTest {
 	{
 		assertEquals("Amerikaans formaat", "2015/01/01", datum.getDatumInAmerikaansFormaat());
 		assertEquals("Amerikaans formaat", "2015/10/19", datumVandaag.getDatumInAmerikaansFormaat());
+	}
+	
+	@Test
+	public void test_verschilInDatumZonderSchrikkeljaar_GelijkAan()
+	{
+		assertEquals(365, datum.verschilInDatum(datumMinEenJaar));
+	}
+	
+	@Test
+	public void test_verschilInDatumMetSchrikkeljaar_GelijkAan()
+	{
+		assertEquals(366, datum.verschilInDatum(datumPlusEenJaar));
+	}
+	
+	@Test
+	public void test_verschilInDatumMeerdereTests_GelijkAan()
+	{
+		//assertEquals(5479, datum.verschilInDatum(datumMetSchrikkeljaar));
+		assertEquals(73049, datum.verschilInDatum(datumMinTweeHonderdJaar));
+		assertEquals(3653, datum.verschilInDatum(datumPlusTienJaar));
+		assertEquals(291, datum.verschilInDatum(datumVandaag));
+		assertEquals(31, datum.verschilInDatum(datumFebruariGeenSchrikkeljaar));
+		assertEquals(7426 , (new Datum(2,1, 2025).verschilInDatum(new Datum(3, 9, 2004))));
+		assertEquals(396 , (new Datum(9, 9, 2009).verschilInDatum(new Datum(10, 10, 2010))));
+		assertEquals(28212, (new Datum(6, 1, 1959).verschilInDatum(new Datum(3, 4, 2036))));
+		assertEquals(364, (new Datum(31, 12, 2015).verschilInDatum(new Datum(1, 1, 2015))));
+		assertEquals(4626, (new Datum(31, 12, 2000).verschilInDatum(new Datum(2, 5, 1988))));
+		assertEquals(7463, (new Datum(6, 6, 1988).verschilInDatum(new Datum(31, 12, 1967))));
+		assertEquals(4383, (new Datum(31, 12, 1988).verschilInDatum(new Datum(31, 12, 2000))));
+		assertEquals(5479, (new Datum(1, 2, 2000).verschilInDatum(new Datum(1, 2, 2015))));
 	}
 	
 	//--------------------------------

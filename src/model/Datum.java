@@ -18,9 +18,9 @@ public class Datum {
 
 	/*public static void main(String[] args)
 	{
-		Datum d = new Datum(1, 1, 2015);
+		Datum d = new Datum(1, 1, 2000);
 
-		System.out.println(d.verschilInDatum(new Datum(19, 10, 2015)));
+		System.out.println(d.verschilInDatum(new Datum(1, 1, 2015)));
 	}*/
 
 	/**
@@ -184,24 +184,35 @@ public class Datum {
     	// De recentste datum moet afgetrokken worden door de oudste
     	Datum recentsteDatum = kleinerDan(datum) ? this : datum;
     	Datum oudsteDatum = kleinerDan(datum) ? datum : this;
-    	//System.out.println(recentsteDatum.toString());
-    	//System.out.println(oudsteDatum.toString());
+    	
+    	// Tweak
+    	//if (recentsteDatum.getDag() == 1)
 
     	// We berekenen eerst het aantal dagen voor de data, startend vanaf het
     	// jaar 0
     	int aantalDagen1 = berekenSchrikkeldagen(recentsteDatum.getJaar());
-    	//System.out.println(aantalDagen1);
+    		// debug
+    		//System.out.println(aantalDagen1);
     		aantalDagen1 += berekenDagenVoorMaanden(recentsteDatum.getMaand());
-    		//System.out.println(aantalDagen1);
+    		// debug
+    		//System.out.println(berekenDagenVoorMaanden(recentsteDatum.getMaand()));
     		aantalDagen1 += recentsteDatum.getDag();
-    		//System.out.println(aantalDagen1);
+    		// debug
+    		//System.out.println(recentsteDatum.getDag());
 
     	int aantalDagen2 = berekenSchrikkeldagen(oudsteDatum.getJaar());
-    		aantalDagen2 += berekenDagenVoorMaanden(oudsteDatum.getMaand());
-    		aantalDagen2 += oudsteDatum.getDag();
+    		// debug
     		//System.out.println(aantalDagen2);
+    		aantalDagen2 += berekenDagenVoorMaanden(oudsteDatum.getMaand());
+    		// debug
+    		//System.out.println(berekenDagenVoorMaanden(oudsteDatum.getMaand()));
+    		aantalDagen2 += oudsteDatum.getDag();
+    		// debug
+    		//System.out.println(oudsteDatum.getDag());
 
-    	// Nu aftrekken en terug omzetten naar een datum
+    	// Nu aftrekken en terug omzetten naar een datum.
+    	// We verminderen nog met 1 omdat de dag van de begindatum wordt bijgeteld en zorgt voor 
+    	// incompatibiliteit met de online tools (op timeanddate.com en kalender-365.nl)
     	verschilTussenData = aantalDagen1 - aantalDagen2;
 
     	return verschilTussenData;
@@ -369,7 +380,6 @@ public class Datum {
     			aantalDagen += 365;
     		}
     	}
-    	//System.out.println(aantalDagen);
     	return aantalDagen;
     }
 
@@ -381,12 +391,25 @@ public class Datum {
     private int berekenDagenVoorMaanden(int maandNummer)
     {
     	int aantalDagen = 0;
+    	
+    	// We doen -1 omdat de laatste maand er niet bij moet worden geteld, want vanaf hier moeten
+    	// de dagen van de datum worden geteld. Bv: 10/10/2015, dagen tellen tot 30/10/2015 en
+    	// dan plus 10
+    	maandNummer -= 1;
+    	
+    	// debug
+    	//System.out.println("Maand nr: " + maandNummer);
 
-    	for (int n = 0; n <= maandNummer; n++)
+    	for (int n = 1; n <= maandNummer; n++)
     	{
-    		if (Maanden.isSchrikkeljaar(n))
-    		aantalDagen += Maanden.get(maandNummer).aantalDagen();
+    		aantalDagen += Maanden.get(n).aantalDagen();
+    		
+    		// debug
+    		//System.out.println("Aantal dagen voor maand " + n +": " + Maanden.get(n).aantalDagen());
     	}
+    	// debug
+    	//System.out.println("Totaal aantal dagen tot maand " + maandNummer + ": " + aantalDagen);
+    	
     	return aantalDagen;
     }
 
