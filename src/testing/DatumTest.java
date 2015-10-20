@@ -77,13 +77,13 @@ public class DatumTest {
 	}
 	
 	@Test
-	public void test_verschilInDatumZonderSchrikkeljaar_GelijkAan()
+	public void test_verschilInDatumZonderSchrikkeljaar_GelijkAan365()
 	{
 		assertEquals(365, datum.verschilInDatum(datumMinEenJaar));
 	}
 	
 	@Test
-	public void test_verschilInDatumMetSchrikkeljaar_GelijkAan()
+	public void test_verschilInDatumMetSchrikkeljaar_GelijkAan366()
 	{
 		assertEquals(366, datum.verschilInDatum(datumPlusEenJaar));
 	}
@@ -91,7 +91,7 @@ public class DatumTest {
 	@Test
 	public void test_verschilInDatumMeerdereTests_GelijkAan()
 	{
-		//assertEquals(5479, datum.verschilInDatum(datumMetSchrikkeljaar));
+		assertEquals(5479, datum.verschilInDatum(datumMetSchrikkeljaar));
 		assertEquals(73049, datum.verschilInDatum(datumMinTweeHonderdJaar));
 		assertEquals(3653, datum.verschilInDatum(datumPlusTienJaar));
 		assertEquals(291, datum.verschilInDatum(datumVandaag));
@@ -103,7 +103,21 @@ public class DatumTest {
 		assertEquals(4626, (new Datum(31, 12, 2000).verschilInDatum(new Datum(2, 5, 1988))));
 		assertEquals(7463, (new Datum(6, 6, 1988).verschilInDatum(new Datum(31, 12, 1967))));
 		assertEquals(4383, (new Datum(31, 12, 1988).verschilInDatum(new Datum(31, 12, 2000))));
-		assertEquals(5479, (new Datum(1, 2, 2000).verschilInDatum(new Datum(1, 2, 2015))));
+		assertEquals(5478, (new Datum(2, 2, 2000).verschilInDatum(new Datum(1, 2, 2015))));
+	}
+	
+	@Test
+	public void test_verschilInDatumZelfdeData_GelijkAan0()
+	{
+		assertEquals(0, (new Datum(2, 2, 2000).verschilInDatum(new Datum(2, 2, 2000))));
+		assertEquals(0, (new Datum(29, 2, 2005).verschilInDatum(new Datum(29, 2, 2005))));
+		assertEquals(0, (new Datum(25, 12, 1955).verschilInDatum(new Datum(25, 12, 1955))));
+	}
+	
+	@Test
+	public void test_dagNaarDatumEnDatumNaarDag_GeeftZelfdeTerug()
+	{
+		
 	}
 	
 	//--------------------------------
