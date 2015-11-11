@@ -1,4 +1,4 @@
-package model;
+package model.datum;
 
 public class DatumVerschil {
 
