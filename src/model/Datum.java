@@ -20,11 +20,12 @@ public class Datum {
 	public static void main(String[] args)
 	{
 		Datum d = new Datum(31, 12, 2000);
-		int dagen = d.datumNaarDagen(d);
-		System.out.println(dagen);
-		System.out.println(d.dagenNaarDatum(dagen));
-
-		//System.out.println(d.verschilInMaanden(new Datum(1, 1, 2001)));
+		//Datum d2 = new Datum(5, 8, 2005);
+		Datum d3 = new Datum(31, 3, 2050);
+		//System.out.println(d.toString());
+		//System.out.println(d2.veranderDatum(1));
+		System.out.println(d3.veranderDatum(35));
+		System.out.println(d.veranderDatum(365));
 	}
 
 	/**
@@ -46,12 +47,29 @@ public class Datum {
 	 *
 	 * @param Datum
 	 */
-	public Datum(Date Datum)
+	public Datum(Date datum)
 	{
 		try {
-			setDag(Datum.getDate());
-			setMaand(Datum.getMonth());
-			setJaar(Datum.getYear());
+			setDag(datum.getDate());
+			setMaand(datum.getMonth());
+			setJaar(datum.getYear());
+
+			datumValidatie();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	/**
+	 * 
+	 * @param datum
+	 */
+	public Datum(Datum datum)
+	{
+		try {
+			setDag(datum.getDag());
+			setMaand(datum.getMaand());
+			setJaar(datum.getJaar());
 
 			datumValidatie();
 		} catch (Exception e) {
@@ -86,6 +104,13 @@ public class Datum {
 	{
 		try {
 			String[] datumDelen = datum.split("/");
+			
+			if (datumDelen.length != 3 || datumDelen[0].length() < 1 ||
+				datumDelen[1].length() != 2 || datumDelen[2].length() != 4)
+			{
+				throw new IllegalArgumentException("De gegeven datum is onjuist. "
+													+ "Geldig formaat: (D)D/MM/YYYY");
+			}
 
 			setDag(Integer.parseInt(datumDelen[0]));
 			setMaand(Integer.parseInt(datumDelen[1]));
@@ -174,6 +199,7 @@ public class Datum {
     {
     	return compareTo(datum) > 0;
     }
+ 
 
     /**
      * Bereken het verschil tussen twee data. Er wordt rekening gehouden met schrikkeljaren
@@ -182,7 +208,7 @@ public class Datum {
      * @param datum
      * @return
      */
-    public int verschilInDatum(Datum datum)
+    /*public int verschilInDatum(Datum datum)
     {
     	int aantalDagen1 = 0,
     		aantalDagen2 = 0;
@@ -216,7 +242,7 @@ public class Datum {
 		//System.out.println(aantalDagen2);
 
     	return aantalDagen1 - aantalDagen2;
-    }
+    }*/
 
     /**
      *
@@ -225,7 +251,8 @@ public class Datum {
      */
     public int verschilInJaren(Datum datum)
     {
-    	return (int) (verschilInDatum(datum) / 365.242375);
+    	//return (int) (verschilInDatum(datum) / 365.242375);
+    	return new DatumVerschil(this, datum).getJaren();
     }
 
     /**
@@ -235,7 +262,8 @@ public class Datum {
      */
     public int verschilInMaanden(Datum datum)
     {
-    	return (int) (verschilInDatum(datum) / 365.242375 * 12);
+    	//return (int) (verschilInDatum(datum) / 365.242375 * 12);
+    	return new DatumVerschil(this, datum).getMaanden();
     }
     
     /**
@@ -245,16 +273,45 @@ public class Datum {
      */
     public Datum veranderDatum(int aantalDagen)
     {
-    	Datum datum = this;
-    	int dagen = datumNaarDagen(datum);
-    	dagen += aantalDagen;
-    	
-    	while (dagen > 365 )
-    	{
-    		
-    	}
-    	
-    	return datum;
+		if (aantalDagen > 0)
+		{
+//			System.out.println("AD begin: " +aantalDagen);
+			while (aantalDagen + dag > Maanden.get(maand).aantalDagen(jaar))
+			{
+//				System.out.println("dag eerst: "+dag);
+//				System.out.println("maand eerst: "+maand);
+//				System.out.println("jaar eerst: "+jaar);
+				// Verminder met dagen in maand
+				aantalDagen -= Maanden.get(maand).aantalDagen(jaar) - dag + 1;
+//				System.out.println("berekening: "+(Maanden.get(maand).aantalDagen(jaar) - dag + 1));
+				// Jaar verhogen
+				jaar += (maand == 12 ? 1 : 0);
+				// Maand verhogen
+				maand = (maand == 12 ? 1 : ++maand);
+				// 
+				dag = 1;
+//				System.out.println("dag nu: "+dag);
+//				System.out.println("maand nu: "+maand);
+//				System.out.println("jaar nu: "+jaar);
+//				System.out.println("AD nu: "+aantalDagen+"\n");
+			}
+		}
+		// Negatieve waarde, dus terug in de tijd gaan
+		else
+		{
+			while (-dag >= aantalDagen)
+			{
+				// Verminder met aantal dagen in huidige maand.
+				aantalDagen += dag;
+				// Verminder jaartal?
+				jaar -= (maand == 1 ? 1 : 0);
+				// Verminder maand
+				maand = (maand == 1 ? 12 : --maand);
+				// Zet als laatste dag van (vorige) maand
+				dag = Maanden.get(maand).aantalDagen(jaar);
+			}
+		}
+		return new Datum(dag += aantalDagen, maand, jaar);
     }
 
     /**
@@ -349,7 +406,8 @@ public class Datum {
             case 2:
             	// 1) Als het geen schrikkeljaar is, heeft februari max 28 dagen
             	// 2) Wel een schrikkeljaar? Max 29 dagen
-            	if ((!Maanden.isSchrikkeljaar(jaar) && dag >= 29) || (Maanden.isSchrikkeljaar(jaar) && dag > 29))
+            	if ((!Maanden.isSchrikkeljaar(jaar) && dag >= 29) || (Maanden.isSchrikkeljaar(jaar) &&
+            		dag > 29))
             	{
             		new Exception("De dag is niet juist voor de gegeven maand februari");
             	}
@@ -367,13 +425,13 @@ public class Datum {
     	return true;
     }
 
-    /**
+/*    *//**
      * Bereken het aantal dagen voor een gegeven jaar. Er wordt rekening gehouden met
      * schrikkeljaren
      *
      * @param jaar
      * @return
-     */
+     *//*
     private int berekenSchrikkeldagen(int jaar)
     {
     	int aantalDagen = 0;
@@ -396,14 +454,14 @@ public class Datum {
     		}
     	}
     	return aantalDagen;
-    }
+    }*/
 
-    /**
+/*    *//**
      * 
      * @param maandNummer De numerieke waarde van de gegeven maand
      * @param jaar
      * @return
-     */
+     *//*
     private int berekenDagenVoorMaanden(int maandNummer, int jaar)
     {
     	int aantalDagen = 0;
@@ -427,14 +485,14 @@ public class Datum {
     	//System.out.println("Totaal aantal dagen tot maand " + maandNummer + ": " + aantalDagen);
     	
     	return aantalDagen;
-    }
+    }*/
     
-    /**
+/*    *//**
      * Converteer de datum naar het aantal dagen vanaf jaar 0
      * 
      * @param datum
      * @return
-     */
+     *//*
     private int datumNaarDagen(Datum datum)
     {
     	int aantalDagen = 0;
@@ -448,14 +506,14 @@ public class Datum {
 		aantalDagen += datum.getDag();
 		
 		return aantalDagen;
-    }
+    }*/
     
     /**
      * Doet het omgekeerde als de vorige methode
      * 
      * @param dagen
      * @return
-     */
+     *//*
     private Datum dagenNaarDatum(int dagen)
     {
     	int maand = 1, jaar = 0;
@@ -463,8 +521,8 @@ public class Datum {
     	// Eerste de jaren optellen
     	while (dagen > 365)
     	{
-    		System.out.println("1: "+dagen);
-    		System.out.println(jaar);
+    		//System.out.println("1: "+dagen);
+    		//System.out.println(jaar);
     		if (Maanden.isSchrikkeljaar(jaar))
     		{
     			dagen -= 366;
@@ -473,8 +531,8 @@ public class Datum {
     		{
     			dagen -= 365;
     		}
-    		System.out.println("2: "+dagen);
-    		System.out.println(jaar);
+    		//System.out.println("2: "+dagen);
+    		//System.out.println(jaar);
     		jaar++;
     	}
     	jaar--;
@@ -503,7 +561,7 @@ public class Datum {
     	}
     	//System.out.println(maand);
     	return new Datum(dagen, maand, jaar);
-    }
+    }*/
 
     /**
      *

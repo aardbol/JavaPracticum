@@ -69,6 +69,11 @@ public enum Maanden {
 	}
 
 
+	/**
+	 * 
+	 * @param jaar
+	 * @return
+	 */
 	public int aantalDagen(int jaar)
 	{
 		return (isSchrikkeljaar(jaar) && februari.maandNummer() == maandNummer)
@@ -85,15 +90,7 @@ public enum Maanden {
      */
     public static boolean isSchrikkeljaar(int jaar)
     {
-        if (jaar % 4 == 0 && jaar % 100 != 0)
-        {
-            return true;
-        }
-        else if (jaar % 400 == 0)
-        {
-        	return true;
-        }
-        return false;
+        return (jaar % 4 == 0 && jaar % 100 != 0) || (jaar % 400 == 0) ? true : false;
     }
 
 }
