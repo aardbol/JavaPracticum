@@ -96,12 +96,19 @@ public class Datum implements Comparable<Datum> {
 	 */
 	public int verschilInJaren(Datum d)
 	{
+		int r;
+		// 1/1/2015 en 1/10/2015
+		// 1/8/2014 en 1/1/2015
 		if( getMonth() <= d.getMonth() && getDay() <= d.getDay() )
 		{
-			return d.getYear() - getYear();
+			r = d.getYear() - getYear();
 		}
 		else
-			return d.getYear() - getYear() -1;
+			r = d.getYear() - getYear() -1;
+		
+		//int verschilInJaren = Math.abs(getYear() - d.getYear());
+		
+		return r;
 	}
 	
 	/**
@@ -111,7 +118,7 @@ public class Datum implements Comparable<Datum> {
 	 */
 	public int verschilInMaanden(Datum d)
 	{
-		return d.getMonth() - getMonth() + verschilInJaren(d) * 12;		
+		return Math.abs(d.getMonth() - getMonth() + verschilInJaren(d) * 12);		
 	}
 	
 	public void veranderThisDatum( int aantalDagen )

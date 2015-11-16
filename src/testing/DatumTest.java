@@ -13,7 +13,7 @@ public class DatumTest {
 
 	private Datum datum, datumVandaag, datumMinEenJaar, datumMinTienJaar,
 	datumMinTweeHonderdJaar, datumMetSchrikkeljaar, datumPlusTienJaar, datumPlusEenJaar,
-	datumPlusEenMaand, datumPlusNegenMaanden, datumPlusDertienMaanden;
+	datumPlusEenMaand, datumPlusNegenMaanden, datumPlusDertienMaanden, datumMinVijfMaanden;
 
 	@Before
 	public void setUp() throws Exception
@@ -29,6 +29,7 @@ public class DatumTest {
 		datumPlusEenMaand = new Datum(1, 2, 2015);
 		datumPlusNegenMaanden = new Datum(1, 10, 2015);
 		datumPlusDertienMaanden = new Datum(1, 2, 2016);
+		datumMinVijfMaanden = new Datum(1, 8, 2014);
 	}
 
 	//@Test(expected = NullPointerException.class)
@@ -92,6 +93,12 @@ public class DatumTest {
 	}
 	
 	@Test
+	public void test_verschilinMaandenMinVijfMaandenVerschil_GeeftVijf()
+	{
+		assertEquals(5, datum.verschilInMaanden(datumMinVijfMaanden));
+	}
+	
+	@Test
 	public void test_verschilInJarenEenJaarVerschil_GeeftEen()
 	{
 		assertEquals(1, datum.verschilInJaren(datumPlusEenJaar));
@@ -101,5 +108,11 @@ public class DatumTest {
 	public void test_verschilInJarenTienJaarVerschil_GeeftTien()
 	{
 		assertEquals(10, datum.verschilInJaren(datumPlusTienJaar));
+	}
+	
+	@Test
+	public void test_verschilInJarenMinEenJaarVerschil_GeeftEen()
+	{
+		assertEquals(1, datum.verschilInJaren(datumMinEenJaar));
 	}
 }
