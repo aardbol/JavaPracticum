@@ -7,37 +7,36 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import model.datum.Datum;
+
 import javax.swing.JSplitPane;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.BoxLayout;
 import javax.swing.JTextField;
 import java.awt.GridLayout;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
-public class AddReservation extends JDialog {
+public class AddRegistration_Wnd extends JDialog {
+	private Registration myRegistration;
 	private JTextField txtVoornaam;
 	private JTextField txtHuisNr;
 	private JTextField txtStartDatum;
 	private JTextField txtAantalNachten;
 	private JTextField txtFamilienaam;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		try {
-			AddReservation dialog = new AddReservation();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	public Registration getRegistration() {
+		return myRegistration;
 	}
 
 	/**
 	 * Create the dialog.
 	 */
-	public AddReservation() {
-		setBounds(100, 100, 450, 225);
+	public AddRegistration_Wnd() {
+		myRegistration = null;
+		setBounds(100, 100, 452, 203);
 		getContentPane().setLayout(new BorderLayout());
 		{
 			JSplitPane splitPane = new JSplitPane();
@@ -59,7 +58,7 @@ public class AddReservation extends JDialog {
 					pnlTitels.add(lblHuisNr);
 				}
 				{
-					JLabel lblStartDatum = new JLabel("Start datum (dd-mm-yy)");
+					JLabel lblStartDatum = new JLabel("Start datum (dd/mm/yyyy)");
 					pnlTitels.add(lblStartDatum);
 				}
 				{
@@ -104,12 +103,30 @@ public class AddReservation extends JDialog {
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				JButton okButton = new JButton("OK");
+				okButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						try {
+							myRegistration = new Registration(txtVoornaam.getText(), txtFamilienaam.getText(),
+									Integer.parseInt(txtHuisNr.getText()), new Datum(txtStartDatum.getText()),
+									Integer.parseInt(txtAantalNachten.getText()));
+							setVisible(false);
+						} catch (Exception ex) {
+							JOptionPane.showMessageDialog(null, ex.getMessage());
+							ex.printStackTrace();
+						}
+					}
+				});
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
 			}
 			{
 				JButton cancelButton = new JButton("Cancel");
+				cancelButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						setVisible(false);
+					}
+				});
 				cancelButton.setActionCommand("Cancel");
 				buttonPane.add(cancelButton);
 			}

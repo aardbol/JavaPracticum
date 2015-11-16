@@ -1,6 +1,6 @@
 package application;
 
-import model.Datum;
+import model.datum.Datum;
 
 public class Registration {
 	// wie

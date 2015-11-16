@@ -1,12 +1,14 @@
 package application;
 
 import java.util.List;
+import java.util.Vector;
 
 public class RegistrationManager {
 	List<Registration> registrations;
 	
 	public RegistrationManager()
 	{
+		registrations = new Vector<Registration>();
 		loadRegistrations();
 	}
 	
@@ -17,6 +19,16 @@ public class RegistrationManager {
 		
 		// add registration to list
 		registrations.add( registration );
+	}
+	
+	public int getCount()
+	{
+		return registrations.size();
+	}
+	
+	public List<Registration> getAllRegistrations()
+	{
+		return registrations;
 	}
 	
 	public void loadRegistrations()
