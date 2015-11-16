@@ -24,8 +24,8 @@ public class DatumVerschil {
     	Datum recentsteDatum = datum1.kleinerDan(datum2) ? datum1 : datum2;
     	Datum oudsteDatum = datum1.kleinerDan(datum2) ? datum2 : datum1;
     	oudsteDatum = new Datum(oudsteDatum);
-    	System.out.println(recentsteDatum);
-    	System.out.println(oudsteDatum);
+    	//System.out.println(recentsteDatum);
+    	//System.out.println(oudsteDatum);
     	
     	// Indien niet in dezelfde maand of hetzelfde jaar, plus 1 maand doen
     	while (datum1.getMaand() != datum2.getMaand() || datum1.getJaar() != datum2.getJaar())
