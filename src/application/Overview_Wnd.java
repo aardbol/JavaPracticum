@@ -14,7 +14,10 @@ import javax.swing.Box;
 import java.awt.GridLayout;
 import javax.swing.JLabel;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultListModel;
+
 import java.awt.event.ActionListener;
+import java.util.List;
 import java.awt.event.ActionEvent;
 
 public class Overview_Wnd extends JFrame {
@@ -32,7 +35,14 @@ public class Overview_Wnd extends JFrame {
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 		
-		JList list = new JList();
+		DefaultListModel model = new DefaultListModel();
+		JList list = new JList(model);
+		
+		List<Registration> registrations = registrationManager.getAllRegistrations();
+		for( Registration reg : registrations )
+		{
+			model.addElement(reg);
+		}
 		contentPane.add(list, BorderLayout.CENTER);
 		
 		JPanel pblButtons = new JPanel();

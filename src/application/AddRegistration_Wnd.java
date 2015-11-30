@@ -105,6 +105,28 @@ public class AddRegistration_Wnd extends JDialog {
 				JButton okButton = new JButton("OK");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
+
+						if (txtVoornaam.getText().length() == 0) {
+							JOptionPane.showMessageDialog(null, "Voornaam is verplicht.");
+							return;
+						}
+						if (txtFamilienaam.getText().length() == 0) {
+							JOptionPane.showMessageDialog(null, "Familienaam is verplicht.");
+							return;
+						}
+						if (txtHuisNr.getText().length() == 0) {
+							JOptionPane.showMessageDialog(null, "Huis nr. is verplicht.");
+							return;
+						}
+						if (txtStartDatum.getText().length() == 0) {
+							JOptionPane.showMessageDialog(null, "Start datum is verplicht.");
+							return;
+						}
+						if (txtAantalNachten.getText().length() == 0) {
+							JOptionPane.showMessageDialog(null, "Aantal verblijvende nachten is verplicht.");
+							return;
+						}
+
 						try {
 							myRegistration = new Registration(txtVoornaam.getText(), txtFamilienaam.getText(),
 									Integer.parseInt(txtHuisNr.getText()), new Datum(txtStartDatum.getText()),

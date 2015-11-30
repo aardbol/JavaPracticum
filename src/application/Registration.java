@@ -25,4 +25,10 @@ public class Registration {
 		this.startDatum = startDatum;
 		this.aantalVerblijfNachten = aantalVerblijfNachten;
 	}
+	
+	@Override
+	public String toString()
+	{
+		return voornaam + " " + familienaam + " " + huisnummer + " " + startDatum.toString() + " " + aantalVerblijfNachten;
+	}
 }
