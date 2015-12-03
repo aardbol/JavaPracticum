@@ -3,17 +3,10 @@ package application;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
-import java.awt.GridBagLayout;
 import javax.swing.JButton;
-import java.awt.GridBagConstraints;
 import java.awt.GridLayout;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
 import java.awt.BorderLayout;
-import javax.swing.SpringLayout;
-import java.awt.FlowLayout;
 import javax.swing.JPanel;
 import javax.swing.Box;
 import java.awt.Component;

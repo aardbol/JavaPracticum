@@ -19,7 +19,8 @@ public class Datum {
 
 	public static void main(String[] args)
 	{
-		
+		Datum d = new Datum(3, 12, 2015);
+		System.out.println());
 	}
 
 	/**
@@ -41,6 +42,7 @@ public class Datum {
 	 *
 	 * @param Datum
 	 */
+	@SuppressWarnings("deprecation")
 	public Datum(Date datum)
 	{
 		try {
@@ -411,6 +413,7 @@ public class Datum {
 	 * Return de huidige datum van het systeem
 	 * @return Date
 	 */
+	@SuppressWarnings("deprecation")
 	private void HuidigeSysteemDatum()
 	{
 		Date Datum = new Date();

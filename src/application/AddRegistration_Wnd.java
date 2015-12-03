@@ -6,14 +6,11 @@ import java.awt.FlowLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-
 import model.datum.Datum;
 
 import javax.swing.JSplitPane;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.BoxLayout;
 import javax.swing.JTextField;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;

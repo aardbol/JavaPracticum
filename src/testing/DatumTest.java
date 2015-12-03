@@ -5,8 +5,8 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-//import model.datum.Datum;
-import model.gregorian.Datum;
+import model.datum.Datum;
+//import model.gregorian.Datum;
 
 
 public class DatumTest {
@@ -31,9 +31,15 @@ public class DatumTest {
 		datumPlusDertienMaanden = new Datum(1, 2, 2016);
 		datumMinVijfMaanden = new Datum(1, 8, 2014);
 	}
+	
+	@Test
+	public void test_toString_GeeftJuisteTerug()
+	{
+		assertEquals("1 januari 2015", datum.toString());
+	}
 
-	//@Test(expected = NullPointerException.class)
-	/*public void test_kleinerDanAlsParameterNull_GeeftException()
+	@Test(expected = NullPointerException.class)
+	public void test_kleinerDanAlsParameterNull_GeeftException()
 	{
 		datum.kleinerDan(null);
 	}
@@ -58,7 +64,7 @@ public class DatumTest {
 		assertTrue(datum.kleinerDan(datumMinTienJaar));
 		assertTrue(datum.kleinerDan(datumMetSchrikkeljaar));
 		assertTrue(datum.kleinerDan(datumMinTweeHonderdJaar));
-	}*/
+	}
 	
 	@Test
 	public void test_getDatumInEuropeesFormaat_GelijkAan()

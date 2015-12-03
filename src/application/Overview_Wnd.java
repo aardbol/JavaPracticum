@@ -1,8 +1,6 @@
 package application;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -12,8 +10,6 @@ import javax.swing.JButton;
 import java.awt.Component;
 import javax.swing.Box;
 import java.awt.GridLayout;
-import javax.swing.JLabel;
-import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 
 import java.awt.event.ActionListener;
@@ -35,8 +31,8 @@ public class Overview_Wnd extends JFrame {
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 		
-		DefaultListModel model = new DefaultListModel();
-		JList list = new JList(model);
+		DefaultListModel<Registration> model = new DefaultListModel<Registration>();
+		JList<Registration> list = new JList<Registration>(model);
 		
 		List<Registration> registrations = registrationManager.getAllRegistrations();
 		for( Registration reg : registrations )
