@@ -1,29 +1,43 @@
 package application;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
+import java.util.Scanner;
 import java.util.Vector;
 
+import model.datum.Datum;
+
 public class RegistrationManager {
-	List<Registration> registrations;
+	private List<Registration> registrations;
 	
+	/**
+	 * 
+	 */
 	public RegistrationManager()
 	{
 		registrations = new Vector<Registration>();
-		loadRegistrations();
+		laadRegistratiesVanBestand();
 	}
 	
-	public void addRegistration( Registration registration )
+	/**
+	 * 
+	 * @param registration
+	 */
+	public void addRegistration(Registration registration)
 	{
 		// TODO: check if registration is valid: Throw exception
 			// registraties van hetzelfde huisnr mogen niet overlappen in tijd
 		
 		// add registration to list
-		registrations.add( registration );
+		registrations.add(registration);
 	}
 	
-	public int getCount()
+	public String getCountString()
 	{
-		return registrations.size();
+		return Integer.toString(registrations.size());
 	}
 	
 	public List<Registration> getAllRegistrations()
@@ -31,13 +45,80 @@ public class RegistrationManager {
 		return registrations;
 	}
 	
-	public void loadRegistrations()
+	/**
+	 * Laad de registraties in de variabele
+	 */
+	public void laadRegistratiesVanBestand()
 	{
-		// TODO: open file, read
+	  File file = new File("reservering.txt");
+	  
+	  if (!file.exists())
+	  {
+		  return;
+	  }
+	  
+	  try {
+		Scanner scanner = new Scanner(file);
+		
+		while (scanner.hasNext())
+		{
+			String lijn = scanner.nextLine();
+			
+			// Leeg bestand
+			if (lijn.isEmpty())
+			{
+				break;
+			}
+			
+			String persoon = lijn.split(">")[1];
+			String reservatie = lijn.split(">")[0];
+			String voornaam = persoon.split(",")[1];
+			String naam = persoon.split(",")[0];
+			int huisnummer = Integer.parseInt(reservatie.split(",")[0]);
+			Datum datum = new Datum(reservatie.split(",")[1]);
+			int aantalNachten = Integer.parseInt(reservatie.split(",")[2]);
+						
+			registrations.add(new Registration(voornaam, naam, huisnummer, datum, aantalNachten));
+		}
+		
+		if (scanner != null)
+		{
+			scanner.close();
+		}
+	  }
+	  catch(Exception e) {
+		  System.out.println(e.getMessage());
+	  }
 	}
 	
-	public void saveRegistrations()
+	/**
+	 * Gegevens opslaan in bestand
+	 */
+	public boolean opslaanRegistraties()
 	{
-		// TODO: open file, write
+        try {
+			PrintWriter OpslaanInBestand = new PrintWriter("reservering.txt");
+	        
+	        for (int n = 0; n < registrations.size(); n++)
+	        {
+	        	OpslaanInBestand.println(registrations.get(n).formaatVoorBestandLijn());
+	        }
+	        OpslaanInBestand.close();
+	        
+	        return true;
+        }
+        catch (IOException e) {
+            System.out.println(e.toString());
+            return false;
+        }
+	}
+	
+	/**
+	 * 
+	 * @param index
+	 */
+	public void verwijderRegistratie(int index)
+	{
+		registrations.remove(index);
 	}
 }

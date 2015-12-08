@@ -2,6 +2,8 @@ package testing;
 
 import static org.junit.Assert.*;
 
+import java.util.Date;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -11,14 +13,16 @@ import model.datum.Datum;
 
 public class DatumTest {
 
-	private Datum datum, datumVandaag, datumMinEenJaar, datumMinTienJaar,
+	private Datum datum, datumVandaag, datumMinEenJaar, datumMinTienJaar, datumVandaagConstructor,
 	datumMinTweeHonderdJaar, datumMetSchrikkeljaar, datumPlusTienJaar, datumPlusEenJaar,
-	datumPlusEenMaand, datumPlusNegenMaanden, datumPlusDertienMaanden, datumMinVijfMaanden;
+	datumPlusEenMaand, datumPlusNegenMaanden, datumPlusDertienMaanden, datumMinVijfMaanden, datumVandaagDate;
 
 	@Before
 	public void setUp() throws Exception
 	{
 		datum = new Datum(1, 1, 2015);
+		datumVandaagDate = new Datum(new Date());
+		datumVandaagConstructor = new Datum();
 		datumVandaag = new Datum(19, 10, 2015);
 		datumMinEenJaar = new Datum(1, 1, 2014);
 		datumMinTienJaar = new Datum(1, 1, 2005);
@@ -120,5 +124,23 @@ public class DatumTest {
 	public void test_verschilInJarenMinEenJaarVerschil_GeeftEen()
 	{
 		assertEquals(1, datum.verschilInJaren(datumMinEenJaar));
+	}
+	
+	@Test
+	public void test_getJaarDatumIntParameters_Geeft2015Terug()
+	{
+		assertEquals(2015, datum.getJaar());
+	}
+	
+	@Test
+	public void test_getJaarDatumParameterDate_GeeftDitJaarTerug()
+	{
+		assertEquals((new Date()).getYear(), datumVandaagDate.getJaar());
+	}
+	
+	@Test
+	public void test_getJaarDatumConstructor_GeeftDitJaarTerug()
+	{
+		assertEquals((new Date()).getYear(), datumVandaagConstructor.getJaar());
 	}
 }

@@ -17,11 +17,10 @@ public class Datum {
 	private String[] maanden = {"januari", "feburari", "maart", "april", "mei",
 			"juni", "juli", "augustus", "september", "oktober", "november", "december"};
 
-	public static void main(String[] args)
+	/*public static void main(String[] args)
 	{
-		Datum d = new Datum(3, 12, 2015);
-		System.out.println());
-	}
+		Datum d = new Datum();
+	}*/
 
 	/**
 	 *
@@ -47,8 +46,8 @@ public class Datum {
 	{
 		try {
 			setDag(datum.getDate());
-			setMaand(datum.getMonth());
-			setJaar(datum.getYear());
+			setMaand(datum.getMonth() + 1);
+			setJaar(datum.getYear() + 1900);
 
 			datumValidatie();
 		} catch (Exception e) {
@@ -104,6 +103,7 @@ public class Datum {
 			if (datumDelen.length != 3 || datumDelen[0].length() < 1 ||
 				datumDelen[1].length() != 2 || datumDelen[2].length() != 4)
 			{
+				System.out.println(datum);
 				throw new IllegalArgumentException("De gegeven datum is onjuist. "
 													+ "Geldig formaat: (D)D/MM/YYYY");
 			}
@@ -416,10 +416,10 @@ public class Datum {
 	@SuppressWarnings("deprecation")
 	private void HuidigeSysteemDatum()
 	{
-		Date Datum = new Date();
+		Date datum = new Date();
 
-		setDag(Datum.getDate());
-		setMaand(Datum.getMonth());
-		setJaar(Datum.getYear());
+		setDag(datum.getDate());
+		setMaand(datum.getMonth() + 1);
+		setJaar(datum.getYear() + 1900);
 	}
 }

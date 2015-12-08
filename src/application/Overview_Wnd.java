@@ -23,7 +23,8 @@ public class Overview_Wnd extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Overview_Wnd( RegistrationManager registrationManager ) {
+	public Overview_Wnd(RegistrationManager registrationManager)
+	{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -32,14 +33,14 @@ public class Overview_Wnd extends JFrame {
 		setContentPane(contentPane);
 		
 		DefaultListModel<Registration> model = new DefaultListModel<Registration>();
-		JList<Registration> list = new JList<Registration>(model);
+		JList<Registration> lijst = new JList<Registration>(model);
 		
 		List<Registration> registrations = registrationManager.getAllRegistrations();
 		for( Registration reg : registrations )
 		{
 			model.addElement(reg);
 		}
-		contentPane.add(list, BorderLayout.CENTER);
+		contentPane.add(lijst, BorderLayout.CENTER);
 		
 		JPanel pblButtons = new JPanel();
 		contentPane.add(pblButtons, BorderLayout.SOUTH);
@@ -48,22 +49,22 @@ public class Overview_Wnd extends JFrame {
 		Component horizontalStrut = Box.createHorizontalStrut(20);
 		pblButtons.add(horizontalStrut);
 		
-		JButton button = new JButton("Delete");
-		button.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(null, "TODO:");
+		JButton button = new JButton("Verwijder");
+		button.addActionListener(e -> {
+			for (int lijstIndex : lijst.getSelectedIndices())
+			{
+				model.remove(lijstIndex);
+				registrationManager.verwijderRegistratie(lijstIndex);
+				StartMenu.lblValueReservations.setText(registrationManager.getCountString());
 			}
+			JOptionPane.showMessageDialog(null, "De geselecteerde registratie(s) is/zijn verwijderd");
 		});
 		pblButtons.add(button);
 		
-		JButton button_1 = new JButton("Close");
-		button_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		JButton button_1 = new JButton("Sluiten");
+		button_1.addActionListener(e -> {
 				setVisible(false);
-			}
 		});
 		pblButtons.add(button_1);
-		
 	}
-
 }

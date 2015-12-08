@@ -23,7 +23,7 @@ public class DatumVerschil {
     	// De recentste datum moet afgetrokken worden door de oudste
     	Datum recentsteDatum = datum1.kleinerDan(datum2) ? datum1 : datum2;
     	Datum oudsteDatum = datum1.kleinerDan(datum2) ? datum2 : datum1;
-    	oudsteDatum = new Datum(oudsteDatum);
+    	//Datum oudsteDatumOrigineel = oudsteDatum;
     	//System.out.println(recentsteDatum);
     	//System.out.println(oudsteDatum);
     	

@@ -6,7 +6,7 @@ public class Datum implements Comparable<Datum> {
 	
 	final String[] MAAND_NAMEN = { "januari", "februari", "maart", "april", "mei", "juni", "juli", "augustus", "september", "oktober", "november", "december" };
 	final int[] MAAND_DAGEN = { 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};	
-	private GregorianCalendar greg; // da shit
+	private GregorianCalendar greg;
 	
 	/**
 	 * 
@@ -78,6 +78,11 @@ public class Datum implements Comparable<Datum> {
 		return String.format("%02d/%02d/%04d", getDay(), getMonth(), getYear());
 	}
 	
+    public boolean kleinerDan(Datum datum)
+    {
+    	return compareTo(datum) > 0;
+    }
+	
 	@Override
 	public String toString() {	
 		return getDay() + " " + MAAND_NAMEN[getMonth()-1] + " " + getYear();
@@ -108,7 +113,29 @@ public class Datum implements Comparable<Datum> {
 		
 		//int verschilInJaren = Math.abs(getYear() - d.getYear());
 		
-		return r;
+		return Math.abs(r);
+	}
+	
+	/**
+	 * verschilInMaanden() heeft deze nodig omdat negatieve resultaten behouden moeten blijven
+	 * @param d
+	 * @return
+	 */
+	private int verschilInJarenOokNegatief(Datum d)
+	{
+		int r;
+		// 1/1/2015 en 1/10/2015
+		// 1/8/2014 en 1/1/2015
+		if( getMonth() <= d.getMonth() && getDay() <= d.getDay() )
+		{
+			r = d.getYear() - getYear();
+		}
+		else
+			r = d.getYear() - getYear() -1;
+		
+		//int verschilInJaren = Math.abs(getYear() - d.getYear());
+		
+		return (r);
 	}
 	
 	/**
@@ -118,7 +145,7 @@ public class Datum implements Comparable<Datum> {
 	 */
 	public int verschilInMaanden(Datum d)
 	{
-		return Math.abs(d.getMonth() - getMonth() + verschilInJaren(d) * 12);		
+		return Math.abs(d.getMonth() - getMonth() + verschilInJarenOokNegatief(d) * 12);		
 	}
 	
 	public void veranderThisDatum( int aantalDagen )

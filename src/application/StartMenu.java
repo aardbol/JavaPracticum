@@ -5,6 +5,9 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JButton;
 import java.awt.GridLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
 import javax.swing.JLabel;
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
@@ -12,18 +15,18 @@ import javax.swing.Box;
 import java.awt.Component;
 import javax.swing.BoxLayout;
 import javax.swing.JSplitPane;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class StartMenu {
 
 	private JFrame frame;
 	private RegistrationManager manager;
+	public static JLabel lblValueReservations;
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args)
+	{
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -39,7 +42,8 @@ public class StartMenu {
 	/**
 	 * Create the application.
 	 */
-	public StartMenu() {
+	public StartMenu()
+	{
 		manager = new RegistrationManager();
 		initialize();
 	}
@@ -47,11 +51,18 @@ public class StartMenu {
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
+	private void initialize()
+	{
 		frame = new JFrame();
 		frame.setBounds(100, 100, 419, 244);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new BorderLayout(0, 0));
+		// Bij het sluiten registraties opslaan
+		frame.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e)
+			{
+				manager.opslaanRegistraties();
+			}
+		});
 
 		JPanel pnlMain = new JPanel();
 		frame.getContentPane().add(pnlMain);
@@ -64,10 +75,10 @@ public class StartMenu {
 		splitPane.setLeftComponent(pnlTitels);
 		pnlTitels.setLayout(new BoxLayout(pnlTitels, BoxLayout.Y_AXIS));
 
-		JLabel lblHouses = new JLabel("Houses:");
+		JLabel lblHouses = new JLabel("Huizen:");
 		pnlTitels.add(lblHouses);
 
-		JLabel lblReservations = new JLabel("Reservations:");
+		JLabel lblReservations = new JLabel("Reservaties:");
 		pnlTitels.add(lblReservations);
 
 		JPanel pnlValues = new JPanel();
@@ -77,7 +88,7 @@ public class StartMenu {
 		JLabel lblValueHouses = new JLabel("107");
 		pnlValues.add(lblValueHouses);
 
-		JLabel lblValueReservations = new JLabel(Integer.toString(manager.getCount()));
+		lblValueReservations = new JLabel(manager.getCountString());
 		pnlValues.add(lblValueReservations);
 
 		JPanel pnlButtons = new JPanel();
@@ -87,28 +98,26 @@ public class StartMenu {
 		Component horizontalStrut = Box.createHorizontalStrut(20);
 		pnlButtons.add(horizontalStrut);
 
-		JButton btnAdd = new JButton("Add reservation");
-		btnAdd.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+		JButton btnAdd = new JButton("Reservatie Tvg");
+		btnAdd.addActionListener(arg0 -> {
 				AddRegistration_Wnd wnd = new AddRegistration_Wnd();
 				wnd.setModal(true);
 				wnd.setVisible(true);
 				Registration reg = wnd.getRegistration();
-				if (reg != null) {
+				
+				if (reg != null)
+				{
 					manager.addRegistration(reg);
-					lblValueReservations.setText(Integer.toString(manager.getCount()));
+					lblValueReservations.setText(manager.getCountString());
 				}
-			}
 		});
 		pnlButtons.add(btnAdd);
 
-		JButton btnOverview = new JButton("Overview");
-		btnOverview.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		JButton btnOverview = new JButton("Overzicht");
+		btnOverview.addActionListener(e -> {
 				Overview_Wnd wnd = new Overview_Wnd(manager);
 				wnd.setVisible(true);
-			}
-		});
+			});
 		pnlButtons.add(btnOverview);
 	}
 
