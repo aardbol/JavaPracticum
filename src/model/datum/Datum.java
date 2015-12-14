@@ -14,62 +14,34 @@ public class Datum {
 	private int maand;
 	private int jaar;
 
-	private String[] maanden = {"januari", "feburari", "maart", "april", "mei",
-			"juni", "juli", "augustus", "september", "oktober", "november", "december"};
-
-	/*public static void main(String[] args)
-	{
-		Datum d = new Datum();
-	}*/
-
 	/**
+	 * @throws Exception 
 	 *
 	 */
-	public Datum()
+	public Datum() throws Exception
 	{
-		try {
-			HuidigeSysteemDatum();
-
-			// Voor de zekerheid ook valideren, want misschien is er anders een security hole?
-			datumValidatie();
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
+		HuidigeSysteemDatum();
 	}
 
 	/**
 	 *
 	 * @param Datum
+	 * @throws Exception 
 	 */
 	@SuppressWarnings("deprecation")
-	public Datum(Date datum)
+	public Datum(Date datum) throws Exception
 	{
-		try {
-			setDag(datum.getDate());
-			setMaand(datum.getMonth() + 1);
-			setJaar(datum.getYear() + 1900);
-
-			datumValidatie();
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
+		setDatum(datum.getDate(), datum.getMonth() + 1, datum.getYear() + 1900);
 	}
 	
 	/**
 	 * 
 	 * @param datum
+	 * @throws Exception 
 	 */
-	public Datum(Datum datum)
+	public Datum(Datum datum) throws Exception
 	{
-		try {
-			setDag(datum.getDag());
-			setMaand(datum.getMaand());
-			setJaar(datum.getJaar());
-
-			datumValidatie();
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
+		setDatum(datum.getDag(), datum.getMaand(), datum.getJaar());
 	}
 
 	/**
@@ -77,65 +49,86 @@ public class Datum {
 	 * @param dag
 	 * @param maand
 	 * @param jaar
+	 * @throws Exception 
 	 */
-	public Datum(int dag, int maand, int jaar)
+	public Datum(int dag, int maand, int jaar) throws Exception
 	{
-		try {
-			setDag(dag);
-			setMaand(maand);
-			setJaar(jaar);
-
-			datumValidatie();
-		} catch(Exception e) {
-			System.out.println(e.getMessage());
-		}
+		setDatum(dag, maand, jaar);
 	}
 
     /**
      * Datum als string DDMMJJJJ
      * @param datum
+     * @throws Exception 
+     * @throws NumberFormatException 
      */
-	public Datum(String datum)
+	public Datum(String datum) throws NumberFormatException, Exception
 	{
-		try {
-			String[] datumDelen = datum.split("/");
-			
-			if (datumDelen.length != 3 || datumDelen[0].length() < 1 ||
-				datumDelen[1].length() != 2 || datumDelen[2].length() != 4)
-			{
-				System.out.println(datum);
-				throw new IllegalArgumentException("De gegeven datum is onjuist. "
-													+ "Geldig formaat: (D)D/MM/YYYY");
-			}
-
-			setDag(Integer.parseInt(datumDelen[0]));
-			setMaand(Integer.parseInt(datumDelen[1]));
-			setJaar(Integer.parseInt(datumDelen[2]));
-
-			datumValidatie();
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
+		String[] datumDelen = datum.split("/");
+		
+		if (datumDelen.length != 3 || datumDelen[0].length() < 1 ||
+			datumDelen[1].length() != 2 || datumDelen[2].length() != 4)
+		{
+			throw new IllegalArgumentException("De gegeven datum is onjuist. "
+												+ "Geldig formaat: (D)D/MM/YYYY");
 		}
+		
+		setDatum(Integer.parseInt(datumDelen[0]), Integer.parseInt(datumDelen[1]), Integer.parseInt(datumDelen[2]));
 	}
 
 	/**
-	 *
+	 * Stel de datumvariabelen in. Doe ook de validatie en werp exceptions indien nodig
+	 * 
 	 * @param dag
 	 * @param maand
 	 * @param jaar
 	 * @return
+	 * @throws Exception 
 	 */
-    public boolean setDatum(int dag, int maand, int jaar)
+    public boolean setDatum(int dag, int maand, int jaar) throws Exception
     {
-    	try {
-	    	setDag(dag);
-	        setMaand(maand);
-	        setJaar(jaar);
-
-	        datumValidatie();
-        } catch(Exception e) {
-        	System.out.println(e.getMessage());
+    	// Eerst de basale controle
+    	if (dag < 1 || dag > 31)
+        {
+            throw new Exception("Ongeldige dag gegeven");
         }
+    	
+    	if (maand < 1 || maand > 12)
+        {
+            throw new Exception("Ongeldige numerieke maand gegeven");
+        }
+    	
+    	if (jaar < 0)
+        {
+            throw new Exception("Ongeldig jaar gegeven");
+        }
+    	
+    	// Nu een precieze controle
+        switch (maand)
+        {
+            case 2:
+            	// 1) Als het geen schrikkeljaar is, heeft februari max 28 dagen
+            	// 2) Wel een schrikkeljaar? Max 29 dagen
+            	if ((!Maanden.isSchrikkeljaar(jaar) && dag >= 29) || (Maanden.isSchrikkeljaar(jaar) &&
+            		dag > 29))
+            	{
+            		throw new Exception("De dag is niet juist voor de gegeven maand februari");
+            	}
+            	break;
+            case 4:
+            case 6:
+            case 9:
+            case 11:
+                if (dag > 30)
+                {
+                    throw new Exception("De dag is niet juist voor de gegeven maand " + Maanden.get(maand));
+                }
+                break;
+        }
+        // Alles is goed verlopen
+        this.dag = dag;
+        this.maand = maand;
+        this.jaar = jaar;
 
         return true;
     }
@@ -201,8 +194,9 @@ public class Datum {
      *
      * @param datum
      * @return
+     * @throws Exception 
      */
-    public int verschilInJaren(Datum datum)
+    public int verschilInJaren(Datum datum) throws Exception
     {
     	return new DatumVerschil(this, datum).getJaren();
     }
@@ -211,8 +205,9 @@ public class Datum {
      *
      * @param datum
      * @return
+     * @throws Exception 
      */
-    public int verschilInMaanden(Datum datum)
+    public int verschilInMaanden(Datum datum) throws Exception
     {
     	return new DatumVerschil(this, datum).getMaanden();
     }
@@ -221,8 +216,9 @@ public class Datum {
      * 
      * @param aantalDagen
      * @return
+     * @throws Exception 
      */
-    public Datum veranderDatum(int aantalDagen)
+    public Datum veranderDatum(int aantalDagen) throws Exception
     {
 		if (aantalDagen > 0)
 		{
@@ -331,95 +327,19 @@ public class Datum {
      */
     public String toString()
     {
-    	return dag + " " + maanden[maand - 1] + " " + jaar;
+    	return dag + " " + Maanden.get(maand) + " " + jaar;
     }
 
     /**
-     * Deze methode kijkt of de gegeven dag geldig is voor het gegeven jaar, rekening
-     * houdend met schrikkeljaren. De details van de datum moeten al geset zijn
-     *
-     * @return true Als de datum geldig is
-     */
-    private boolean datumValidatie()
-    {
-        switch (maand)
-        {
-            case 2:
-            	// 1) Als het geen schrikkeljaar is, heeft februari max 28 dagen
-            	// 2) Wel een schrikkeljaar? Max 29 dagen
-            	if ((!Maanden.isSchrikkeljaar(jaar) && dag >= 29) || (Maanden.isSchrikkeljaar(jaar) &&
-            		dag > 29))
-            	{
-            		new Exception("De dag is niet juist voor de gegeven maand februari");
-            	}
-            	break;
-            case 4:
-            case 6:
-            case 9:
-            case 11:
-                if (dag > 30)
-                {
-                    new Exception("De dag is niet juist voor de gegeven maand");
-                }
-                break;
-        }
-    	return true;
-    }
-
-    /**
-     *
-     * @param dag
-     * @return
-     */
-    private void setDag(int dag)
-    {
-    	if (dag < 1 || dag > 31)
-        {
-            new Exception("Ongeldige dag gegeven");
-        }
-    	this.dag = dag;
-    }
-
-    /**
-     *
-     * @param maand
-     * @return
-     */
-    private void setMaand(int maand)
-    {
-    	if (maand < 1 || maand > 12)
-        {
-            new Exception("Ongeldige maand gegeven");
-        }
-    	this.maand = maand;
-    }
-
-    /**
-     *
-     * @param jaar
-     * @return
-     */
-    private void setJaar(int jaar)
-    {
-    	if (jaar < 0)
-        {
-            new Exception("Ongeldig jaar gegeven");
-        }
-    	this.jaar = jaar;
-    }
-
-
-	/**
 	 * Return de huidige datum van het systeem
 	 * @return Date
+	 * @throws Exception 
 	 */
 	@SuppressWarnings("deprecation")
-	private void HuidigeSysteemDatum()
+	private void HuidigeSysteemDatum() throws Exception
 	{
 		Date datum = new Date();
-
-		setDag(datum.getDate());
-		setMaand(datum.getMonth() + 1);
-		setJaar(datum.getYear() + 1900);
+		
+		setDatum(datum.getDate(), datum.getMonth() + 1, datum.getYear() + 1900);
 	}
 }

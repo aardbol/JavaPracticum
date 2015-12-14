@@ -24,14 +24,16 @@ public class AddRegistration_Wnd extends JDialog {
 	private JTextField txtAantalNachten;
 	private JTextField txtFamilienaam;
 
-	public Registration getRegistration() {
+	public Registration getRegistration()
+	{
 		return myRegistration;
 	}
 
 	/**
 	 * Create the dialog.
 	 */
-	public AddRegistration_Wnd() {
+	public AddRegistration_Wnd()
+	{
 		myRegistration = null;
 		setBounds(100, 100, 452, 203);
 		getContentPane().setLayout(new BorderLayout());
@@ -152,6 +154,5 @@ public class AddRegistration_Wnd extends JDialog {
 				buttonPane.add(cancelButton);
 			}
 		}
-}
-
+	}
 }

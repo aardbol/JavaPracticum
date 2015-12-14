@@ -85,43 +85,43 @@ public class DatumTest {
 	}
 	
 	@Test
-	public void test_verschilInMaandenEenMaandVerschil_GeeftEen()
+	public void test_verschilInMaandenEenMaandVerschil_GeeftEen() throws Exception
 	{
 		assertEquals(1, datum.verschilInMaanden(datumPlusEenMaand));
 	}
 	
 	@Test
-	public void test_verschilInMaandenNegenMaandenVerschil_GeeftNegen()
+	public void test_verschilInMaandenNegenMaandenVerschil_GeeftNegen() throws Exception
 	{
 		assertEquals(9, datum.verschilInMaanden(datumPlusNegenMaanden));
 	}
 	
 	@Test
-	public void test_verschilInMaandenDertienMaandenVerschil_GeeftDertien()
+	public void test_verschilInMaandenDertienMaandenVerschil_GeeftDertien() throws Exception
 	{
 		assertEquals(13, datum.verschilInMaanden(datumPlusDertienMaanden));
 	}
 	
 	@Test
-	public void test_verschilinMaandenMinVijfMaandenVerschil_GeeftVijf()
+	public void test_verschilinMaandenMinVijfMaandenVerschil_GeeftVijf() throws Exception
 	{
 		assertEquals(5, datum.verschilInMaanden(datumMinVijfMaanden));
 	}
 	
 	@Test
-	public void test_verschilInJarenEenJaarVerschil_GeeftEen()
+	public void test_verschilInJarenEenJaarVerschil_GeeftEen() throws Exception
 	{
 		assertEquals(1, datum.verschilInJaren(datumPlusEenJaar));
 	}
 	
 	@Test
-	public void test_verschilInJarenTienJaarVerschil_GeeftTien()
+	public void test_verschilInJarenTienJaarVerschil_GeeftTien() throws Exception
 	{
 		assertEquals(10, datum.verschilInJaren(datumPlusTienJaar));
 	}
 	
 	@Test
-	public void test_verschilInJarenMinEenJaarVerschil_GeeftEen()
+	public void test_verschilInJarenMinEenJaarVerschil_GeeftEen() throws Exception
 	{
 		assertEquals(1, datum.verschilInJaren(datumMinEenJaar));
 	}
@@ -135,12 +135,12 @@ public class DatumTest {
 	@Test
 	public void test_getJaarDatumParameterDate_GeeftDitJaarTerug()
 	{
-		assertEquals((new Date()).getYear(), datumVandaagDate.getJaar());
+		assertEquals((new Date()).getYear() + 1900, datumVandaagDate.getJaar());
 	}
 	
 	@Test
 	public void test_getJaarDatumConstructor_GeeftDitJaarTerug()
 	{
-		assertEquals((new Date()).getYear(), datumVandaagConstructor.getJaar());
+		assertEquals((new Date()).getYear() + 1900, datumVandaagConstructor.getJaar());
 	}
 }

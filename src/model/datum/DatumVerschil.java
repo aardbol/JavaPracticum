@@ -12,8 +12,9 @@ public class DatumVerschil {
      * 
      * @param datum
      * @return
+     * @throws Exception 
      */
-	DatumVerschil(Datum datum1, Datum datum2)
+	DatumVerschil(Datum datum1, Datum datum2) throws Exception
     {
     	if (datum1.equals(datum2))
     	{
